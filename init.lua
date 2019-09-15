@@ -1,5 +1,12 @@
+#!/usr/bin/env tarantool
+
 require('strict').on()
 
-local server = require('app.server')
+conf = require('conf')
 
-server:start()
+box.cfg {
+    log = conf.BOX_LOG,
+    feedback_enabled = conf.BOX_FEEDBACK_ENABLED,
+}
+
+require('app.server'):start()
