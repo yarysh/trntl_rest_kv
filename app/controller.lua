@@ -1,5 +1,3 @@
-json = require('json')
-
 function get(req)
     local id = req:stash('id')
     local resp = req:render({json = {method = 'GET', id = id}})

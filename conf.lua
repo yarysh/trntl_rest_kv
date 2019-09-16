@@ -1,5 +1,6 @@
 local os = require('os')
 
+
 local NIL = 'NIL'
 function merge_conf(base, extra)
     for k, v in pairs(extra) do
@@ -17,6 +18,9 @@ local base_conf = {
 
     BOX_LOG = '/var/log/box.log',
     BOX_FEEDBACK_ENABLED = false,
+
+    APP_KV_SPACE = 'kv',
+    APP_LAST_REQUEST_SPACE = 'last_request',
 }
 
 local dev_conf = {
@@ -24,10 +28,17 @@ local dev_conf = {
     BOX_LOG = NIL,
 }
 
+local testing_conf = {
+    TESTING_APP_URL = 'http://127.0.0.1:3000/kv/',
+    APP_KV_SPACE = 'test_kv',
+    APP_LAST_REQUEST_SPACE = 'test_last_request',
+}
+
 local app_mode = os.getenv('APP_MODE')
 if app_mode == 'dev' then
     return merge_conf(base_conf, dev_conf)
+elseif app_mode == 'testing' then
+    return merge_conf(base_conf, testing_conf)
 else
     return base_conf
 end
-
