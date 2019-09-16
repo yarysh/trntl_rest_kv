@@ -26,32 +26,34 @@ function kv.get_space()
 end
 
 
--- Model for storing last request
-local last_request = {
-    space_name = conf.APP_LAST_REQUEST_SPACE,
+-- Model storing requests count for ip and ts
+local request_count = {
+    space_name = conf.APP_REQUEST_COUNT_SPACE,
     model = {
         ip = 1,
         ts = 2,
+        cnt = 3,
     },
 }
 
-function last_request.create_db()
-    local space = box.schema.space.create(last_request.space_name, {
+function request_count.create_db()
+    local space = box.schema.space.create(request_count.space_name, {
         if_not_exists = true,
+        temporary = true,
     })
     space:create_index('primary', {
         type = 'hash',
-        parts = {last_request.model.ip, 'string'},
+        parts = {request_count.model.ip, 'string', request_count.model.ts, 'unsigned'},
         if_not_exists = true,
     })
 end
 
-function last_request.get_space()
-    return box.space[last_request.space_name]
+function request_count.get_space()
+    return box.space[request_count.space_name]
 end
 
 
 return {
     kv = kv,
-    last_request = last_request,
+    request_count = request_count,
 }

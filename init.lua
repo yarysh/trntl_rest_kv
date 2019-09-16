@@ -20,7 +20,7 @@ if app_mode ~= nil and app_mode ~= '' then
 end
 box.once(once_key, function ()
     model.kv.create_db()
-    model.last_request.create_db()
+    model.request_count.create_db()
 end)
 
 require('app.server'):start()

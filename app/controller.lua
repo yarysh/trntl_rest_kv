@@ -1,8 +1,17 @@
+local kv = require('app.model').kv
+
+
 function get(req)
-    local id = req:stash('id')
-    local resp = req:render({json = {method = 'GET', id = id}})
-    resp.status = 200
-    return resp
+    local rows = kv.get_space():select({req:stash('id')})
+    local resp
+    if #rows ~= 0 then
+        resp = req:render({json = rows[1][kv.model.value]})
+        resp.status = 200
+    else
+        resp = req:render({text = 'No such key'})
+        resp.status = 404
+    end
+    return resp;
 end
 
 function post(req)

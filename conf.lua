@@ -20,7 +20,7 @@ local base_conf = {
     BOX_FEEDBACK_ENABLED = false,
 
     APP_KV_SPACE = 'kv',
-    APP_LAST_REQUEST_SPACE = 'last_request',
+    APP_REQUEST_COUNT_SPACE = 'request_count',
 }
 
 local dev_conf = {
@@ -29,9 +29,10 @@ local dev_conf = {
 }
 
 local testing_conf = {
+    SERVER_RPS_LIMIT = 10,
     TESTING_APP_URL = 'http://127.0.0.1:3000/kv/',
     APP_KV_SPACE = 'test_kv',
-    APP_LAST_REQUEST_SPACE = 'test_last_request',
+    APP_REQUEST_COUNT_SPACE = 'test_request_count',
 }
 
 local app_mode = os.getenv('APP_MODE')
