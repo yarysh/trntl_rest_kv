@@ -6,6 +6,7 @@ local os = require('os')
 
 local TEST_CASES = {
     'tests.get',
+    'tests.post',
 }
 
 -- Starting server
