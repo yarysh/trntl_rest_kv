@@ -4,7 +4,8 @@ local tap = require('tap')
 
 local conf = require('conf')
 local controller = require('app.controller')
-local model = require('app.model')
+local kv_db = require('app.model').kv
+local request_count_db = require('app.model').request_count
 local server = require('app.server')
 
 
@@ -13,7 +14,8 @@ local case = {}
 
 function case.before() end
 function case.after()
-    model.kv.get_space():truncate()
+    kv_db.get_space():truncate()
+    request_count_db.get_space():truncate()
 end
 
 function test_requests_limit()
@@ -26,7 +28,7 @@ end
 
 function test_get_key()
     local key, value = 'test_key', json.encode({a = 1, b = 2, c = '3'})
-    model.kv.get_space():insert({key, value})
+    kv_db.get_space():insert({key, value})
     local r = client.get(conf.TESTING_APP_URL .. key)
     test:is(r.status, 200, 'get status 200 for key')
     test:is(json.decode(r.body), value, 'get correct value for key')

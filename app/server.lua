@@ -6,7 +6,7 @@ local server = require('http.server')
 
 local conf = require('conf')
 local controller = require('app.controller')
-local request_count = require('app.model').request_count
+local request_count_db = require('app.model').request_count
 
 
 function operation_logger(req, resp)
@@ -45,13 +45,13 @@ function limited_rps(handler, rps_limit)
     rps_limit = rps_limit or conf.SERVER_RPS_LIMIT
     return function (req)
         local ts = os.time()
-        local rows = request_count.get_space():select({req.peer.host, ts})
-        if #rows ~= 0 and rows[1][request_count.model.cnt] == rps_limit then
+        local rows = request_count_db.get_space():select({ req.peer.host, ts})
+        if #rows ~= 0 and rows[1][request_count_db.model.cnt] == rps_limit then
             local resp = req:render({text = 'Too Many Requests'})
             resp.status = 429
             return resp
         end
-        request_count.get_space():upsert({req.peer.host, ts, 1}, {{'+', request_count.model.cnt, 1}})
+        request_count_db.get_space():upsert({ req.peer.host, ts, 1}, { { '+', request_count_db.model.cnt, 1}})
         return handler(req)
     end
 end

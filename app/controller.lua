@@ -1,13 +1,13 @@
 local json = require('json')
 
-local kv = require('app.model').kv
+local kv_db = require('app.model').kv
 
 
 function get(req)
     local resp
-    local rows = kv.get_space():select({req:stash('id')})
+    local rows = kv_db.get_space():select({ req:stash('id')})
     if #rows ~= 0 then
-        resp = req:render({json = rows[1][kv.model.value]})
+        resp = req:render({json = rows[1][kv_db.model.value]})
         resp.status = 200
     else
         resp = req:render({text = 'No such key'})
@@ -38,13 +38,13 @@ function post(req)
         return resp
     end
 
-    if #kv.get_space():select({key}) ~= 0 then
+    if #kv_db.get_space():select({ key}) ~= 0 then
         resp = req:render({text = 'Key already exists'})
         resp.status = 409
         return resp
     end
 
-    kv.get_space():insert({key, value})
+    kv_db.get_space():insert({ key, value})
     resp = req:render({json = {key = key, value = data.value}})
     resp.status = 201
     return resp
