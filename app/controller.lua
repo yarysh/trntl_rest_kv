@@ -85,10 +85,18 @@ function put(req)
 end
 
 function delete(req)
-    local id = req:stash('id')
-    local resp = req:render({json = {method = 'DELETE', id = id}})
-    resp.status = 200
-    return resp
+    local resp
+    local key = req:stash('id')
+    local rows = kv_db.get_space():select({key})
+    if #rows ~= 0 then
+        kv_db.get_space():delete(key)
+        resp = req:render({text = ''})
+        resp.status = 204
+    else
+        resp = req:render({text = 'No such key'})
+        resp.status = 404
+    end
+    return resp;
 end
 
 return {

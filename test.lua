@@ -8,6 +8,7 @@ local TEST_CASES = {
     'tests.get',
     'tests.post',
     'tests.put',
+    'tests.delete',
 }
 
 -- Starting server
