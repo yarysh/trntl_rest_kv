@@ -31,7 +31,7 @@ function test_get_key()
     kv_db.get_space():insert({key, value})
     local r = client.get(conf.TESTING_APP_URL .. key)
     test:is(r.status, 200, 'get status 200 for key')
-    test:is(json.decode(r.body), value, 'get correct value for key')
+    test:is(r.body, value, 'get correct value for key')
 end
 
 function test_get_unknown_key()

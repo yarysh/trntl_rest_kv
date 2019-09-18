@@ -7,7 +7,7 @@ function get(req)
     local resp
     local rows = kv_db.get_space():select({req:stash('id')})
     if #rows ~= 0 then
-        resp = req:render({json = rows[1][kv_db.model.value]})
+        resp = req:render({json = json.decode(rows[1][kv_db.model.value])})
         resp.status = 200
     else
         resp = req:render({text = 'No such key'})
