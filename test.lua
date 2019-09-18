@@ -13,7 +13,7 @@ local TEST_CASES = {
 
 -- Starting server
 os.setenv('APP_MODE', 'testing')
-require('init')
+require('app')
 
 -- Running tests
 for _, case_name in ipairs(TEST_CASES) do

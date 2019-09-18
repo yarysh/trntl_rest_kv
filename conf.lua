@@ -13,10 +13,10 @@ local base_conf = {
     SERVER_HOST = '0.0.0.0',
     SERVER_PORT = 3000,
     SERVER_RPS_LIMIT = 2,
-    SERVER_LOG = '/var/log/server.log',
+    SERVER_LOG = '/var/log/tarantool/httpd.log',
     SERVER_DISPLAY_ERRORS = false,
 
-    BOX_LOG = '/var/log/box.log',
+    BOX_LOG = '/var/log/tarantool/app.log',
     BOX_FEEDBACK_ENABLED = false,
 
     APP_KV_SPACE = 'kv',
